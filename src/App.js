@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
+import Axios from 'axios';
 
 function App() {
+  const [excuse, setExcuse] = useState("");
+  function fetchExcuse(category) {
+    const url = `https://excuser.herokuapp.com/v1/excuse/${category}`;
+    Axios.get(url).then(response => {
+      setExcuse(response.data[0]['excuse'])
+    });
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+      <h1>Generate excuse</h1>
+      
+        <button onClick={() => (fetchExcuse("developers"))}>Developer</button>
+        <button onClick={() => fetchExcuse("family")}>Family</button>
+        <button onClick={() => fetchExcuse("funny")}>Funny</button>
+        <h3>{excuse}</h3>
+      
     </div>
+    
   );
 }
 
